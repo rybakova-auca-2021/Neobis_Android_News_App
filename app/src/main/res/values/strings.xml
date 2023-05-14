@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NewsApp</string>
+    <string name="description">Description</string>
+    <string name="title">title</string>
+    <string name="date_of_publication">date of publication</string>
+    <string name="source">source</string>
+    <string name="breaking_news">Breaking News</string>
 </resources>
