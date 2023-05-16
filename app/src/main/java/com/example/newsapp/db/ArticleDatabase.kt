@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.newsapp.MainActivity
 import com.example.newsapp.model.Article
 
 @Database(entities = [Article::class], version = 1, exportSchema = false)
@@ -15,7 +16,7 @@ abstract class ArticleDatabase : RoomDatabase() {
         private const val DATABASE_NAME = "article_database"
         private val LOCK = Any()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
+        operator fun invoke(context: MainActivity) = instance ?: synchronized(LOCK) {
             instance ?: createDatabase(context).also { instance = it }
         }
 

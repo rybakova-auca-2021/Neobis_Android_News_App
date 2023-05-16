@@ -21,6 +21,6 @@ interface ApiInterface {
         @Query("query") query: String,
         @Query("page") pageNumber: Int = 1,
         @Query("apiKey") apiKey: String
-    ): Call<Article>
+    ): Response<NewsResponse>
 }
 
