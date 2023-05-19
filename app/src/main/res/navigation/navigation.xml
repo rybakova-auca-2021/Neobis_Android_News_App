@@ -31,7 +31,11 @@
         android:id="@+id/detailFragment"
         android:name="com.example.newsapp.view.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail"
         app:enterAnim="@anim/fade_in"
-        app:popEnterAnim="@anim/slide_out_left"/>
+        app:popEnterAnim="@anim/slide_out_left"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="article"
+            app:argType="com.example.newsapp.model.Article" />
+    </fragment>
 </navigation>

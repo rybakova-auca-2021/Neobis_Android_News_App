@@ -20,7 +20,7 @@ interface ApiInterface {
     suspend fun searchForNews(
         @Query("query") query: String,
         @Query("page") pageNumber: Int = 1,
-        @Query("apiKey") apiKey: String
+        @Query("apiKey") apiKey: String = API_KEY
     ): Response<NewsResponse>
 }
 
