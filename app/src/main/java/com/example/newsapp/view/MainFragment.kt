@@ -51,6 +51,13 @@ class MainFragment : Fragment() {
             )
         }
 
+        binding.savedNews.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_savedFragment)
+        }
+        binding.reload.setOnClickListener {
+            showProgressBar()
+            viewModel.updateNews()
+        }
         viewModel.news.observe(viewLifecycleOwner, Observer { response ->
             handleNewsResponse(response)
         })
@@ -99,7 +106,6 @@ class MainFragment : Fragment() {
 //            }
 //        })
 //    }
-
 
     private fun hideProgressBar() {
         binding.progressBar.visibility = View.INVISIBLE

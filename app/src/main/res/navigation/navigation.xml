@@ -15,6 +15,9 @@
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/fade_in"
             app:popEnterAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_mainFragment_to_savedFragment"
+            app:destination="@id/savedFragment" />
     </fragment>
     <fragment
         android:id="@+id/savedFragment"
@@ -26,6 +29,9 @@
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/fade_in"
             app:popEnterAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_savedFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -37,5 +43,8 @@
         <argument
             android:name="article"
             app:argType="com.example.newsapp.model.Article" />
+        <action
+            android:id="@+id/action_detailFragment_to_mainFragment2"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>
