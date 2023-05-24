@@ -14,10 +14,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
 
     private var onItemClickListener: ((Article) -> Unit)? = null
 
-//    private val MAX_ITEMS = 20
-
-    inner class ViewHolder(val binding: CardBinding): RecyclerView.ViewHolder(binding.root)
-
     private val differCallback = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
             return oldItem.url == newItem.url
@@ -26,8 +22,9 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
             return oldItem == newItem
         }
     }
-
     val differ = AsyncListDiffer(this, differCallback)
+
+    inner class ViewHolder(val binding: CardBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -50,7 +47,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     }
 
     override fun getItemCount(): Int {
-//        return differ.currentList.size.coerceAtMost(MAX_ITEMS)
         return differ.currentList.size
     }
 

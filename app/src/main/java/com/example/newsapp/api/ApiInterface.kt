@@ -18,7 +18,7 @@ interface ApiInterface {
 
     @GET("v2/everything")
     suspend fun searchForNews(
-        @Query("query") query: String,
+        @Query("q") query: String,
         @Query("page") pageNumber: Int = 1,
         @Query("apiKey") apiKey: String = API_KEY
     ): Response<NewsResponse>

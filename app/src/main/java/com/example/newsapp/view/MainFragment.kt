@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -24,9 +26,6 @@ class MainFragment : Fragment() {
     private lateinit var newsAdapter: RecyclerViewAdapter
     private lateinit var viewModel: NewsViewModel
 
-
-    val TAG = "MainFragment"
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,7 +39,17 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
         setupRecyclerView()
+        setupObservers()
+        setupOnClickListeners()
+        search()
+    }
 
+    private fun setupObservers() {
+        viewModel.news.observe(viewLifecycleOwner) { response ->
+            handleNewsResponse(response)
+        }
+    }
+    private fun setupOnClickListeners() {
         newsAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
                 putSerializable("article", it)
@@ -50,21 +59,12 @@ class MainFragment : Fragment() {
                 bundle
             )
         }
-
         binding.savedNews.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_savedFragment)
         }
         binding.reload.setOnClickListener {
-            showProgressBar()
-            viewModel.updateNews()
+            reload()
         }
-        viewModel.news.observe(viewLifecycleOwner, Observer { response ->
-            handleNewsResponse(response)
-        })
-//        search()
-        viewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
-            handleNewsResponse(response)
-        })
     }
 
     private fun handleNewsResponse(response: Resource<NewsResponse>) {
@@ -78,7 +78,7 @@ class MainFragment : Fragment() {
             is Resource.Error -> {
                 hideProgressBar()
                 response.message?.let { message ->
-                    Log.e(TAG, "An error occurred: $message")
+                    Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
                 }
             }
             is Resource.Loading -> {
@@ -86,26 +86,24 @@ class MainFragment : Fragment() {
             }
         }
     }
+    private fun search() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    viewModel.searchForArticle(it)
+                }
+                return true
+            }
+        })
+    }
 
-//    private fun performSearch(query: String) {
-//        viewModel.searchNews(query)
-//    }
-
-//    private fun search() {
-//        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                query?.let {
-//                    performSearch(it)
-//                }
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                newText?.let { performSearch(it) }
-//                return false
-//            }
-//        })
-//    }
+    private fun reload() {
+        newsAdapter.differ.submitList(listOf())
+        viewModel.getNews()
+    }
 
     private fun hideProgressBar() {
         binding.progressBar.visibility = View.INVISIBLE

@@ -1,11 +1,9 @@
 package com.example.newsapp.view
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -33,18 +31,16 @@ class DetailFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
 
         val article = arguments?.getSerializable("article") as Article
-
         binding.webView.loadUrl(article.url)
 
         binding.buttonBack.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        binding.imageButton.setOnClickListener {
+        binding.buttonSave.setOnClickListener {
             viewModel.saveArticle(article)
             val myToast = Toast.makeText(requireContext(), "Article saved!", Toast.LENGTH_SHORT)
             myToast.show()
         }
     }
 }
-
